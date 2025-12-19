@@ -3,6 +3,7 @@ package com.taskflowx.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -12,8 +13,16 @@ import com.taskflowx.model.Task;
 import com.taskflowx.model.User;
 
 @Repository
-public interface AuditLogRepository {
+public interface AuditLogRepository extends JpaRepository<AuditLog, Long> {
 
+    List<AuditLog> findByTaskId(Long taskId);
+
+    List<AuditLog> findByPerformedById(Long userId);
+
+    List<AuditLog> findByTimestampBetween(LocalDateTime startDate, LocalDateTime endDate);
+
+
+    
     // Find all audit logs for a specific task
     List<AuditLog> findByTaskOrderByTimestampDesc(Task task);
     
@@ -33,4 +42,7 @@ public interface AuditLogRepository {
     
     // Get recent audit logs (for admin dashboard)
     List<AuditLog> findTop10ByOrderByTimestampDesc();
+
+
+   
 }

@@ -20,6 +20,16 @@ public interface TaskRepository extends JpaRepository<Task, Long>{
     // Find tasks by assigned user and status
     List<Task> findByAssignedToAndStatus(User user, TaskStatus status);
 
+    List<Task> findByAssignedToId(Long userId);
+
+    List<Task> findByAssignedToIdAndStatus(Long userId, TaskStatus status);
+
+    List<Task> findByCreatedById(Long managerId);
+
+    List<Task> findByCreatedByIdAndStatus(Long managerId, TaskStatus status);
+
+
+    
     // Find tasks created by a specific user (Manager view)
     List<Task> findByCreatedBy(User user);
 
@@ -36,5 +46,7 @@ public interface TaskRepository extends JpaRepository<Task, Long>{
     // Count tasks assigned to user
     @Query("SELECT COUNT(t) FROM Task t WHERE t.assignedTo = :user")
     long countByAssignedTo(@Param("user") User user);
+
+    
 
 }
