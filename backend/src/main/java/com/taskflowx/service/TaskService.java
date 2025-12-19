@@ -13,20 +13,36 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TaskService {
+    private static final Logger logger = LoggerFactory.getLogger(TaskService.class);
 
     private final TaskRepository taskRepository;
     private final AuditService auditService;
 
     @Cacheable(value = "tasks", key = "#taskId")
+    @Transactional(readOnly = true)
     public Task getTaskById(Long taskId) {
-        return taskRepository.findById(taskId)
+        logger.info(">>> Fetching Task ID {} from Database (Cache Miss) <<<", taskId);
+        
+        Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + taskId));
+
+        // Force initialization of lazy relationships before caching
+        if (task.getCreatedBy() != null) {
+            task.getCreatedBy().getFullName();
+        }
+        if (task.getAssignedTo() != null) {
+            task.getAssignedTo().getFullName();
+        }
+        return task;
     }
 
     @Cacheable(value = "tasksList", key = "#userId + '-' + #status")

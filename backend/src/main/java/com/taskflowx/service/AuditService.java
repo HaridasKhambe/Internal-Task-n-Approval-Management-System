@@ -10,6 +10,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,12 +20,15 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AuditService {
+    private static final Logger logger = LoggerFactory.getLogger(AuditService.class);
 
     private final AuditLogRepository auditLogRepository;
 
     @Async
     @Transactional
     public void logAction(User user, Task task, String action, String details) {
+        logger.info(">>> Async Audit Log running on thread: {} <<<", Thread.currentThread().getName());
+        
         AuditLog auditLog = new AuditLog();
         auditLog.setPerformedBy(user);
         auditLog.setTask(task);

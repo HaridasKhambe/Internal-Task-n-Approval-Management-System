@@ -28,6 +28,7 @@ public class EmployeeService {
         return taskService.getTasksByUser(employee.getId(), status);
     }
 
+    @Transactional(readOnly = true)
     public TaskResponse getTaskDetails(Long taskId, String employeeEmail) {
         Task task = taskService.getTaskById(taskId);
         User employee = userRepository.findByEmail(employeeEmail)
