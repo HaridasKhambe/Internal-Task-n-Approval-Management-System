@@ -33,13 +33,22 @@ public class SecurityConfig {
     @Autowired
     private CorsFilter corsFilter;
 
+    public static final String[] PUBLIC_URLS = {
+        "/api/auth/**",
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html"
+    };
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .cors(cors -> cors.disable()) //: Let CorsFilter handle CORS
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()
+                // .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers(PUBLIC_URLS).permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/manager/**").hasRole("MANAGER")
                 .requestMatchers("/api/employee/**").hasRole("EMPLOYEE")
