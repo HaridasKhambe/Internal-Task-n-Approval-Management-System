@@ -1,8 +1,8 @@
 # 🚀 TaskFlowX – Internal Task & Approval Management System
 
 ## 📘 Overview
-**TaskFlowX** is a backend-first enterprise workflow system designed to **manage internal tasks, approvals, and accountability** within an organization.  
-It focuses on **workflow enforcement, auditability, performance, and security**, instead of basic CRUD operations.
+**TaskFlowX** is a **Spring Boot–based**, **backend-first enterprise workflow system** built using **RESTful MVC architecture**, designed to manage **internal tasks**, **approvals**, and **accountability** within an organization.  
+It focuses on **workflow enforcement**, **auditability**, **performance**, and **security**, instead of basic **CRUD operations**.
 
 ---
 
