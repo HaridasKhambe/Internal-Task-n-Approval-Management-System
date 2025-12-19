@@ -17,20 +17,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Username is required")
-    @Size(min = 3, max = 50)
+    // @NotBlank(message = "Username is required")
+    // @Size(min = 3, max = 50)
+    // @Column(unique = true, nullable = false)
+    // private String username;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email format")
     @Column(unique = true, nullable = false)
-    private String username;
+    private String email;
 
     @NotBlank(message = "Password is required")
     @Size(min = 6)
     @Column(nullable = false)
     private String password;
 
-    @NotBlank(message = "Email is required")
-    @Email(message = "Invalid email format")
-    @Column(unique = true, nullable = false)
-    private String email;
+    @Column(nullable = false)
+    private String fullName;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -50,7 +53,7 @@ public class User {
     public User() {}
 
     public User(String username, String password, String email, Role role) {
-        this.username = username;
+        this.email = email;
         this.password = password;
         this.email = email;
         this.role = role;
@@ -65,12 +68,20 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    // public String getUsername() {
+    //     return username;
+    // }
+
+    // public void setUsername(String username) {
+    //     this.username = username;
+    // }
+
+     public String getFullName() {
+        return fullName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getPassword() {
