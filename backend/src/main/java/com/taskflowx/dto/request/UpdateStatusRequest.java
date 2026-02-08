@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateStatusRequest {
 
-    @NotNull(message = "Status is required")
-    private TaskStatus status;
+  @NotNull(message = "Status is required")
+  private TaskStatus status;
 
-    private String comment; // Optional: for additional notes when updating status
+  private String comment; // Optional: for additional notes when updating status
 }

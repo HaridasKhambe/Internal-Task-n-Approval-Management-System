@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ApproveRejectRequest {
 
-    @NotBlank(message = "Action is required (APPROVE or REJECT)")
-    private String action; // "APPROVE" or "REJECT"
+  @NotBlank(message = "Action is required (APPROVE or REJECT)")
+  private String action; // "APPROVE" or "REJECT"
 
-    private String comment; // Required when REJECT, optional for APPROVE
+  private String comment; // Required when REJECT, optional for APPROVE
 }

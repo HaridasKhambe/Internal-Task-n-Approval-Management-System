@@ -14,29 +14,29 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
+  private final UserRepository userRepository;
+  private final PasswordEncoder passwordEncoder;
+  private final JwtUtil jwtUtil;
 
-    public AuthResponse login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UnauthorizedException("Invalid email or password"));
+  public AuthResponse login(LoginRequest request) {
+    User user = userRepository.findByEmail(request.getEmail())
+      .orElseThrow(() -> new UnauthorizedException("Invalid email or password"));
 
-        if (!user.getIsActive()) {
-            throw new UnauthorizedException("Account is inactive");
-        }
-
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new UnauthorizedException("Invalid email or password");
-        }
-
-        String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
-
-        return new AuthResponse(
-                token,
-                user.getEmail(),
-                user.getFullName(),
-                user.getRole()
-        );
+    if (!user.getIsActive()) {
+      throw new UnauthorizedException("Account is inactive");
     }
+
+    if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+      throw new UnauthorizedException("Invalid email or password");
+    }
+
+    String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
+
+    return new AuthResponse(
+      token,
+      user.getEmail(),
+      user.getFullName(),
+      user.getRole()
+    );
+  }
 }

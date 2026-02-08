@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AssignTaskRequest {
-    
-    @NotNull(message = "Employee ID is required")
-    private Long employeeId;
+
+  @NotNull(message = "Employee ID is required")
+  private Long employeeId;
 }

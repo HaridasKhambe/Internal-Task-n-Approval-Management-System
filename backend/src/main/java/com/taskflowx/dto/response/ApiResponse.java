@@ -1,33 +1,32 @@
 package com.taskflowx.dto.response;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ApiResponse<T> {
 
-    private boolean success;
-    private String message;
-    private T data;
-    private LocalDateTime timestamp;
+  private boolean success;
+  private String message;
+  private T data;
+  private LocalDateTime timestamp;
 
-    // Success response with data
-    public static <T> ApiResponse<T> success(String message, T data) {
-        return new ApiResponse<>(true, message, data, LocalDateTime.now());
-    }
+  // Success response with data
+  public static <T> ApiResponse<T> success(String message, T data) {
+    return new ApiResponse<>(true, message, data, LocalDateTime.now());
+  }
 
-    // Success response without data
-    public static <T> ApiResponse<T> success(String message) {
-        return new ApiResponse<>(true, message, null, LocalDateTime.now());
-    }
+  // Success response without data
+  public static <T> ApiResponse<T> success(String message) {
+    return new ApiResponse<>(true, message, null, LocalDateTime.now());
+  }
 
-    // Error response
-    public static <T> ApiResponse<T> error(String message) {
-        return new ApiResponse<>(false, message, null, LocalDateTime.now());
-    }
+  // Error response
+  public static <T> ApiResponse<T> error(String message) {
+    return new ApiResponse<>(false, message, null, LocalDateTime.now());
+  }
 }

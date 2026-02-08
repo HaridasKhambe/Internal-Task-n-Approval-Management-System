@@ -6,13 +6,18 @@ import com.taskflowx.dto.response.TaskResponse;
 import com.taskflowx.enums.TaskStatus;
 import com.taskflowx.service.EmployeeService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/employee")
@@ -20,36 +25,36 @@ import java.util.List;
 @PreAuthorize("hasRole('EMPLOYEE')")
 public class EmployeeController {
 
-    private final EmployeeService employeeService;
+  private final EmployeeService employeeService;
 
-    @GetMapping("/tasks")
-    public ResponseEntity<ApiResponse<List<TaskResponse>>> getMyTasks(
-            @RequestParam(required = false) TaskStatus status,
-            Authentication authentication
-    ) {
-        String employeeEmail = authentication.getName();
-        List<TaskResponse> tasks = employeeService.getMyTasks(employeeEmail, status);
-        return ResponseEntity.ok(ApiResponse.success("Tasks retrieved successfully", tasks));
-    }
+  @GetMapping("/tasks")
+  public ResponseEntity<ApiResponse<List<TaskResponse>>> getMyTasks(
+    @RequestParam(required = false) TaskStatus status,
+    Authentication authentication
+  ) {
+    String employeeEmail = authentication.getName();
+    List<TaskResponse> tasks = employeeService.getMyTasks(employeeEmail, status);
+    return ResponseEntity.ok(ApiResponse.success("Tasks retrieved successfully", tasks));
+  }
 
-    @GetMapping("/tasks/{id}")
-    public ResponseEntity<ApiResponse<TaskResponse>> getTaskById(
-            @PathVariable Long id,
-            Authentication authentication
-    ) {
-        String employeeEmail = authentication.getName();
-        TaskResponse task = employeeService.getTaskDetails(id, employeeEmail);
-        return ResponseEntity.ok(ApiResponse.success("Task retrieved successfully", task));
-    }
+  @GetMapping("/tasks/{id}")
+  public ResponseEntity<ApiResponse<TaskResponse>> getTaskById(
+    @PathVariable Long id,
+    Authentication authentication
+  ) {
+    String employeeEmail = authentication.getName();
+    TaskResponse task = employeeService.getTaskDetails(id, employeeEmail);
+    return ResponseEntity.ok(ApiResponse.success("Task retrieved successfully", task));
+  }
 
-    @PutMapping("/tasks/{id}/status")
-    public ResponseEntity<ApiResponse<TaskResponse>> updateTaskStatus(
-            @PathVariable Long id,
-            @Valid @RequestBody UpdateStatusRequest request,
-            Authentication authentication
-    ) {
-        String employeeEmail = authentication.getName();
-        TaskResponse response = employeeService.updateTaskStatus(id, request, employeeEmail);
-        return ResponseEntity.ok(ApiResponse.success("Task status updated successfully", response));
-    }
+  @PutMapping("/tasks/{id}/status")
+  public ResponseEntity<ApiResponse<TaskResponse>> updateTaskStatus(
+    @PathVariable Long id,
+    @Valid @RequestBody UpdateStatusRequest request,
+    Authentication authentication
+  ) {
+    String employeeEmail = authentication.getName();
+    TaskResponse response = employeeService.updateTaskStatus(id, request, employeeEmail);
+    return ResponseEntity.ok(ApiResponse.success("Task status updated successfully", response));
+  }
 }

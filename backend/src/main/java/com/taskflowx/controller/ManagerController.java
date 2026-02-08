@@ -8,13 +8,19 @@ import com.taskflowx.dto.response.TaskResponse;
 import com.taskflowx.enums.TaskStatus;
 import com.taskflowx.service.ManagerService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/manager")
@@ -22,47 +28,47 @@ import java.util.List;
 @PreAuthorize("hasRole('MANAGER')")
 public class ManagerController {
 
-    private final ManagerService managerService;
+  private final ManagerService managerService;
 
-    @PostMapping("/tasks")
-    public ResponseEntity<ApiResponse<TaskResponse>> createTask(
-            @Valid @RequestBody CreateTaskRequest request,
-            Authentication authentication
-    ) {
-        String managerEmail = authentication.getName();
-        TaskResponse response = managerService.createTask(request, managerEmail);
-        return ResponseEntity.ok(ApiResponse.success("Task created successfully", response));
-    }
+  @PostMapping("/tasks")
+  public ResponseEntity<ApiResponse<TaskResponse>> createTask(
+    @Valid @RequestBody CreateTaskRequest request,
+    Authentication authentication
+  ) {
+    String managerEmail = authentication.getName();
+    TaskResponse response = managerService.createTask(request, managerEmail);
+    return ResponseEntity.ok(ApiResponse.success("Task created successfully", response));
+  }
 
-    @PutMapping("/tasks/{id}/assign")
-    public ResponseEntity<ApiResponse<TaskResponse>> assignTask(
-            @PathVariable Long id,
-            @Valid @RequestBody AssignTaskRequest request,
-            Authentication authentication
-    ) {
-        String managerEmail = authentication.getName();
-        TaskResponse response = managerService.assignTask(id, request, managerEmail);
-        return ResponseEntity.ok(ApiResponse.success("Task assigned successfully", response));
-    }
+  @PutMapping("/tasks/{id}/assign")
+  public ResponseEntity<ApiResponse<TaskResponse>> assignTask(
+    @PathVariable Long id,
+    @Valid @RequestBody AssignTaskRequest request,
+    Authentication authentication
+  ) {
+    String managerEmail = authentication.getName();
+    TaskResponse response = managerService.assignTask(id, request, managerEmail);
+    return ResponseEntity.ok(ApiResponse.success("Task assigned successfully", response));
+  }
 
-    @GetMapping("/tasks")
-    public ResponseEntity<ApiResponse<List<TaskResponse>>> getMyTasks(
-            @RequestParam(required = false) TaskStatus status,
-            Authentication authentication
-    ) {
-        String managerEmail = authentication.getName();
-        List<TaskResponse> tasks = managerService.getMyTasks(managerEmail, status);
-        return ResponseEntity.ok(ApiResponse.success("Tasks retrieved successfully", tasks));
-    }
+  @GetMapping("/tasks")
+  public ResponseEntity<ApiResponse<List<TaskResponse>>> getMyTasks(
+    @RequestParam(required = false) TaskStatus status,
+    Authentication authentication
+  ) {
+    String managerEmail = authentication.getName();
+    List<TaskResponse> tasks = managerService.getMyTasks(managerEmail, status);
+    return ResponseEntity.ok(ApiResponse.success("Tasks retrieved successfully", tasks));
+  }
 
-    @PutMapping("/tasks/{id}/review")
-    public ResponseEntity<ApiResponse<TaskResponse>> reviewTask(
-            @PathVariable Long id,
-            @Valid @RequestBody ApproveRejectRequest request,
-            Authentication authentication
-    ) {
-        String managerEmail = authentication.getName();
-        TaskResponse response = managerService.reviewTask(id, request, managerEmail);
-        return ResponseEntity.ok(ApiResponse.success("Task reviewed successfully", response));
-    }
+  @PutMapping("/tasks/{id}/review")
+  public ResponseEntity<ApiResponse<TaskResponse>> reviewTask(
+    @PathVariable Long id,
+    @Valid @RequestBody ApproveRejectRequest request,
+    Authentication authentication
+  ) {
+    String managerEmail = authentication.getName();
+    TaskResponse response = managerService.reviewTask(id, request, managerEmail);
+    return ResponseEntity.ok(ApiResponse.success("Task reviewed successfully", response));
+  }
 }
